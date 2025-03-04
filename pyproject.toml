@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "email-otp-service"
+version = "0.1.0"
+description = "Service to extract OTP from emails"
+authors = ["Your Name <your.email@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fastapi = "^0.104.0"
+uvicorn = "^0.24.0"
+python-dotenv = "^1.0.0"
+pydantic = "^2.4.2"
+pydantic-settings = "^2.0.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.3"
+black = "^23.10.1"
+isort = "^5.12.0"
+flake8 = "^6.1.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api" 
