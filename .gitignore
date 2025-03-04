@@ -171,3 +171,4 @@ cython_debug/
 .pypirc
 .cursorrules
 .cursorignore
+credentials.json
