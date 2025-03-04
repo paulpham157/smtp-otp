@@ -7,6 +7,7 @@ Service để đọc email và trích xuất mã OTP từ Gmail sử dụng IMAP
 1. Clone repository
 2. Cài đặt dependencies:
 ```bash
+pip install poetry
 poetry install
 ```
 
