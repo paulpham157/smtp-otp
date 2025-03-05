@@ -9,16 +9,14 @@ class OtpService:
     def __init__(self, settings: Settings):
         self.settings = settings
 
-    async def get_reg_new_otp(self) -> Dict:
-        """Tạo thông tin người dùng ngẫu nhiên và tìm OTP trong email."""
+    async def get_reg_new_cursor(self) -> Dict:
+        """Tạo thông tin người dùng ngẫu nhiên."""
         random_user = RandomUserService.generate_user()
-        user_info = random_user.to_dict()
+        return random_user.to_dict()
 
-        print("\nThông tin người dùng ngẫu nhiên:")
-        print(f"Họ: {user_info['last_name']}")
-        print(f"Tên: {user_info['first_name']}")
-        print(f"Email: {user_info['email']}")
-        print(f"Password: {user_info['password']}")
+    async def get_reg_new_otp_only(self, email: str) -> Dict:
+        """Tìm OTP trong email dựa trên email đã tạo."""
+        print(f"\nĐang tìm OTP cho email: {email}")
 
         wait_times = [3, 2, 1]
         total_wait_time = 0
@@ -35,13 +33,10 @@ class OtpService:
                     gmail_pass=self.settings.gmail_pass,
                     gmail_tag=self.settings.gmail_tag,
                 ) as email_service:
-                    email_data = email_service.get_latest_unread_email(
-                        user_info["email"]
-                    )
+                    email_data = email_service.get_latest_unread_email(email)
 
                     if email_data and email_data.otp:
                         return {
-                            "user_info": user_info,
                             "otp": email_data.otp,
                             "email_date": email_data.date,
                             "attempts": attempts,
@@ -54,7 +49,6 @@ class OtpService:
                 print(f"Lỗi khi tìm email lần {attempts}: {str(e)}")
 
         return {
-            "user_info": user_info,
             "otp": None,
             "email_date": None,
             "attempts": attempts,
