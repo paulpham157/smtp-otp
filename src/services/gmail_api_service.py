@@ -6,7 +6,7 @@ import pickle
 import os.path
 
 
-class GmailService:
+class GmailAPIService:
     """Service để gửi email qua Gmail API (Đang phát triển)."""
 
     SCOPES = [
