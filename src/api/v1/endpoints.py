@@ -20,7 +20,7 @@ class EmailRequest(BaseModel):
     email: str
 
 
-@router.get("/reg-new-otp", response_model=RandomUserResponse)
+@router.post("/reg-new-otp", response_model=RandomUserResponse)
 async def get_reg_new_otp(settings: Settings = Depends(get_settings)):
     """Tạo thông tin người dùng ngẫu nhiên và tìm OTP trong email."""
     try:
