@@ -15,7 +15,7 @@ class EmailData:
     body: str
 
 
-class EmailService:
+class IMAPService:
     def __init__(self, gmail_user: str, gmail_pass: str, gmail_tag: str = "INBOX"):
         self.gmail_user = gmail_user
         self.gmail_pass = gmail_pass

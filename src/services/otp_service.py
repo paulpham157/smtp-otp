@@ -1,6 +1,6 @@
 from typing import Dict, Optional
 from src.core.config import Settings
-from src.services.email_service import EmailService
+from src.services.imap_service import IMAPService
 from src.services.random_user_service import RandomUserService
 import asyncio
 
@@ -28,7 +28,7 @@ class OtpService:
             total_wait_time += wait_time
 
             try:
-                with EmailService(
+                with IMAPService(
                     gmail_user=self.settings.gmail_user,
                     gmail_pass=self.settings.gmail_pass,
                     gmail_tag=self.settings.gmail_tag,
@@ -57,7 +57,7 @@ class OtpService:
 
     async def get_all_unread_otps(self, email: str) -> Dict:
         """Truy vấn lấy danh sách các OTP chưa đọc của 1 email cụ thể."""
-        with EmailService(
+        with IMAPService(
             gmail_user=self.settings.gmail_user,
             gmail_pass=self.settings.gmail_pass,
             gmail_tag=self.settings.gmail_tag,
@@ -84,7 +84,7 @@ class OtpService:
 
     async def get_all_otps(self, email: str) -> Dict:
         """Truy vấn lấy tất cả OTP của 1 email cụ thể."""
-        with EmailService(
+        with IMAPService(
             gmail_user=self.settings.gmail_user,
             gmail_pass=self.settings.gmail_pass,
             gmail_tag=self.settings.gmail_tag,
