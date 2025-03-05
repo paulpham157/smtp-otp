@@ -13,7 +13,7 @@ Dịch vụ tự động xử lý và trích xuất mã OTP từ email sử dụ
 
 ## Yêu cầu hệ thống
 
-- Python 3.8+
+- Python 3.11
 - Poetry (quản lý dependencies)
 - Kết nối internet ổn định
 - Tài khoản Gmail (với App Password đã được cấu hình)
@@ -22,30 +22,33 @@ Dịch vụ tự động xử lý và trích xuất mã OTP từ email sử dụ
 
 1. Clone repository:
 ```bash
-git clone <repository_url>
+git clone https://github.com/yourusername/email-otp-service.git
 cd email-otp-service
 ```
 
-2. Cài đặt dependencies:
+2. Cài đặt Poetry (nếu chưa có):
 ```bash
-pip install poetry
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+3. Cài đặt dependencies:
+```bash
 poetry install
 ```
 
-3. Cấu hình môi trường:
+4. Cấu hình môi trường:
    - Copy file `.env.example` thành `.env`
    - Cập nhật các thông tin cần thiết:
 ```env
 GMAIL_USER=your_email@gmail.com
 GMAIL_PASS=your_app_password
 GMAIL_TAG=INBOX
-GMAIL_SEARCH_CRITERIA=UNSEEN
 ```
 
 ## Khởi động dịch vụ
 
 ```bash
-poetry run uvicorn app.main:app --reload
+poetry run python src/main.py
 ```
 
 Dịch vụ sẽ chạy tại http://localhost:8000
@@ -76,7 +79,7 @@ Lấy và xử lý email mới nhất gửi đến địa chỉ email được c
 ## Sử dụng như Package
 
 ```python
-from app.services.email_service import EmailService
+from src.services.email_service import EmailService
 
 with EmailService() as service:
     email_data = service.get_latest_unread_email("target@example.com")

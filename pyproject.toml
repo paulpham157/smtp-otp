@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Service to say hihi to Cursor"
 authors = ["Anonymouse <anonymouse@gmail.com>"]
 packages = [
-    { include = "app" }
+    { include = "src" }
 ]
 
 [tool.poetry.dependencies]
