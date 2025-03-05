@@ -169,7 +169,7 @@ class EmailService:
 
         email_list = []
         for msg_id in message_numbers:
-            status, msg_data = self.mail.fetch(msg_id, "(RFC822)")
+            status, msg_data = self.mail.fetch(msg_id, "(BODY.PEEK[])")
 
             if status != "OK":
                 continue

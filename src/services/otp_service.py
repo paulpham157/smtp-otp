@@ -73,7 +73,14 @@ class OtpService:
             otp_list = []
             for email_data in emails:
                 if email_data and email_data.otp:
-                    otp_list.append({"otp": email_data.otp, "date": email_data.date})
+                    otp_list.append(
+                        {
+                            "otp": email_data.otp,
+                            "date": email_data.date,
+                            "subject": email_data.subject,
+                            "sender": email_data.sender,
+                        }
+                    )
 
             return {
                 "email": email,
