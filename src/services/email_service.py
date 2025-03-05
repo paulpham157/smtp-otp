@@ -2,7 +2,7 @@ import imaplib
 import email
 from email.header import decode_header
 import re
-from typing import Optional, Dict, Any
+from typing import List, Optional, Dict, Any
 from dataclasses import dataclass
 
 
@@ -113,3 +113,79 @@ class EmailService:
             otp=self.extract_otp(body),
             body=body,
         )
+
+    def get_all_unread_emails(self, to_email: str) -> List[EmailData]:
+        """Lấy tất cả email chưa đọc gửi đến địa chỉ email cụ thể."""
+        if not self.mail:
+            raise ConnectionError("Chưa kết nối đến máy chủ IMAP")
+
+        search_criteria = f'(UNSEEN TO "{to_email}")'
+        status, messages = self.mail.search(None, search_criteria)
+
+        if status != "OK":
+            return []
+
+        message_numbers = messages[0].split()
+        if not message_numbers:
+            return []
+
+        email_list = []
+        for msg_id in message_numbers:
+            status, msg_data = self.mail.fetch(msg_id, "(RFC822)")
+
+            if status != "OK":
+                continue
+
+            email_body = msg_data[0][1]
+            email_message = email.message_from_bytes(email_body)
+
+            body = self.get_email_body(email_message)
+
+            email_data = EmailData(
+                subject=self.decode_subject(email_message["subject"]),
+                sender=email.utils.parseaddr(email_message["from"])[1],
+                date=email_message["date"],
+                otp=self.extract_otp(body),
+                body=body,
+            )
+            email_list.append(email_data)
+
+        return email_list
+
+    def get_all_emails(self, to_email: str) -> List[EmailData]:
+        """Lấy tất cả email (đã đọc và chưa đọc) gửi đến địa chỉ email cụ thể."""
+        if not self.mail:
+            raise ConnectionError("Chưa kết nối đến máy chủ IMAP")
+
+        search_criteria = f'(TO "{to_email}")'
+        status, messages = self.mail.search(None, search_criteria)
+
+        if status != "OK":
+            return []
+
+        message_numbers = messages[0].split()
+        if not message_numbers:
+            return []
+
+        email_list = []
+        for msg_id in message_numbers:
+            status, msg_data = self.mail.fetch(msg_id, "(RFC822)")
+
+            if status != "OK":
+                continue
+
+            email_body = msg_data[0][1]
+            email_message = email.message_from_bytes(email_body)
+
+            body = self.get_email_body(email_message)
+
+            email_data = EmailData(
+                subject=self.decode_subject(email_message["subject"]),
+                sender=email.utils.parseaddr(email_message["from"])[1],
+                date=email_message["date"],
+                otp=self.extract_otp(body),
+                body=body,
+            )
+            email_list.append(email_data)
+
+        return email_list
